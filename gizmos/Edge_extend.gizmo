@@ -1,0 +1,70 @@
+#! C:/Program Files/Nuke10.5v4/nuke-10.5.4.dll -nx
+version 10.5 v4
+Gizmo {
+ inputs 2
+ tile_color 0xff
+ note_font "Verdana Bold Italic"
+ lock_connections true
+ addUserKnob {20 User}
+ addUserKnob {41 size l EgeBlur T EdgeBlur14.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 size_1 l Blur T Blur2.size}
+}
+ Input {
+  inputs 0
+  name Mask
+  note_font "Verdana Bold Italic"
+  xpos 8
+  ypos 220
+  number 1
+ }
+ Input {
+  inputs 0
+  name Image
+  note_font "Verdana Bold Italic"
+  selected true
+  xpos 146
+  ypos 157
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy11
+  xpos 146
+  ypos 214
+ }
+ Premult {
+  name Premult11
+  xpos 146
+  ypos 252
+ }
+set N34f9000 [stack 0]
+ EdgeBlur {
+  name EdgeBlur14
+  xpos 192
+  ypos 332
+ }
+push $N34f9000
+ Blur {
+  name Blur2
+  xpos 60
+  ypos 347
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 60
+  ypos 385
+ }
+ Merge2 {
+  inputs 2
+  name Merge19
+  xpos 192
+  ypos 385
+ }
+ Output {
+  name Output1
+  xpos 192
+  ypos 485
+ }
+end_group

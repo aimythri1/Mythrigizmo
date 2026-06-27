@@ -1,0 +1,204 @@
+# LightWrap gizmo
+Gizmo {
+ inputs 2
+ addUserKnob {20 User}
+ addUserKnob {41 Diffuse T diffuse.size}
+ addUserKnob {7 Intensity R 0 100}
+ addUserKnob {6 onlywrap l "Generate wrap only" t "By default the lightwrap effect is comped on top of the A side element.  To keep the effect as a separate element, check this." +STARTLINE}
+ addUserKnob {6 disableluma l "Disable luminance based wrap" t "By default the lightwrap uses a luma key to cut the glow effect, for a uniform glow, select this." +STARTLINE}
+ addUserKnob {6 enableglow l "Enable Glow" t "\"By default the lightwrap is only applied inside the A side alpha, to extend the glow outside, check this." +STARTLINE}
+ addUserKnob {41 FGBlur T fgblur.size}
+ addUserKnob {41 BGBlur T bgblur.size}
+ addUserKnob {41 Saturation T Saturation1.saturation}
+ addUserKnob {7 LumaTolerance}
+ addUserKnob {41 highlightmerge l "Highlight Merge" T hltmerge.operation}
+ addUserKnob {6 useconstant l "Use constant highlight"}
+ addUserKnob {41 constantcolor l Constant T Constant1.color}
+ addUserKnob {20 CCorrect}
+ addUserKnob {41 white T CCorrect1.white}
+ addUserKnob {41 gray l "midtone bias" T CCorrect1.gray}
+ addUserKnob {20 master l "@b;master" n 1}
+ addUserKnob {41 contrast T CCorrect1.contrast}
+ addUserKnob {41 gamma T CCorrect1.gamma}
+ addUserKnob {41 gain T CCorrect1.gain}
+ addUserKnob {41 offset T CCorrect1.offset}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 shadows l "@b;shadows" n 1}
+ addUserKnob {41 shadows_gamma l gamma T CCorrect1.shadows_gamma}
+ addUserKnob {41 shadows_gain l gain T CCorrect1.shadows_gain}
+ addUserKnob {41 shadows_offset l offset T CCorrect1.shadows_offset}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 midtones l "@b;midtones" n 1}
+ addUserKnob {41 midtones_gamma l gamma T CCorrect1.midtones_gamma}
+ addUserKnob {41 midtones_gain l gain T CCorrect1.midtones_gain}
+ addUserKnob {41 midtones_offset l offset T CCorrect1.midtones_offset}
+ addUserKnob {20 "" n -1}
+ addUserKnob {20 highlights l "@b;highlights" n 1}
+ addUserKnob {41 highlights_gamma l gamma T CCorrect1.highlights_gamma}
+ addUserKnob {41 highlights_gain l gain T CCorrect1.highlights_gain}
+ addUserKnob {41 highlights_offset l offset T CCorrect1.highlights_offset}
+ addUserKnob {41 mix T CCorrect1.mix}
+}
+ Input {
+  inputs 0
+  name A
+  xpos -575
+  ypos 192
+ }
+set N99cb250 [stack 0]
+push $N99cb250
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name Constant1
+  xpos -79
+  ypos 30
+  postage_stamp false
+ }
+set N99da6a0 [stack 0]
+ Input {
+  inputs 0
+  name B
+  xpos -189
+  ypos -45
+  number 1
+ }
+set N99dc5a8 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {{LumaTolerance i} {1 i} {1 i} {1 i}}
+  name Keyer1
+  xpos -189
+  ypos 31
+ }
+ Premult {
+  name Premult1
+  xpos -189
+  ypos 74
+ }
+ Blur {
+  name bgblur
+  xpos -189
+  ypos 103
+ }
+set N99e40a0 [stack 0]
+push $N99da6a0
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -79
+  ypos 110
+ }
+ Premult {
+  name Premult2
+  xpos -79
+  ypos 139
+ }
+ Switch {
+  inputs 2
+  which {{disableluma i}}
+  name disableluma
+  xpos 31
+  ypos 139
+ }
+push $N99dc5a8
+push $N99e40a0
+ Switch {
+  inputs 2
+  which {{disableluma i}}
+  name disableluma1
+  xpos -334
+  ypos 110
+ }
+ Switch {
+  inputs 2
+  which {{useconstant i}}
+  name constantcolor
+  xpos -191
+  ypos 207
+ }
+push $N99cb250
+push $N99cb250
+ Blur {
+  channels alpha
+  size 1
+  name fgblur
+  xpos -364
+  ypos 185
+ }
+ Merge2 {
+  inputs 2
+  operation out
+  Achannels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name edgemerge
+  label edgemerge
+  xpos -364
+  ypos 283
+ }
+ Merge2 {
+  inputs 2
+  operation in
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name maskmerge
+  label maskmerge
+  xpos -191
+  ypos 290
+ }
+ Blur {
+  size 15
+  name diffuse
+  xpos -191
+  ypos 333
+ }
+ Multiply {
+  value {{Intensity i}}
+  name intensity
+  xpos -191
+  ypos 376
+ }
+ Saturation {
+  name Saturation1
+  xpos -191
+  ypos 419
+ }
+ CCorrect {
+  gray 0.18
+  name CCorrect1
+  xpos -191
+  ypos 448
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  bbox A
+  name maskmerge2
+  label maskmerge2
+  xpos -191
+  ypos 484
+  disable {{enableglow i}}
+ }
+ Shuffle {
+  alpha black
+  name Shuffle1
+  selected true
+  xpos -191
+  ypos 527
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  output {rgba.red rgba.green rgba.blue rgba.alpha}
+  name hltmerge
+  label highlightmerge
+  xpos -191
+  ypos 629
+  disable {{onlywrap i}}
+ }
+ Output {
+  name Output1
+  xpos -191
+  ypos 712
+ }
+end_group

@@ -1,0 +1,40 @@
+#! C:/Program Files/Nuke15.1v3/nuke-15.1.3.dll -nx
+version 15.1 v3
+Gizmo {
+ tile_color 0x7be76200
+ label v1.1
+ addUserKnob {20 EXR_MOV_Write t EXR_MOV_Write}
+ addUserKnob {2 output_path l "Output Path"}
+ addUserKnob {4 mov_colorspace l "MOV Colorspace" M {Gamma2.2 linear sRGB rec709}}
+ addUserKnob {4 render_mode l "Render What?" M {"EXR + MOV" "EXR only" "MOV only"}}
+ addUserKnob {26 status l Status: T "Waiting for render..."}
+ addUserKnob {22 render_both l Render -STARTLINE T "\nimport nuke\nimport os\nimport re\n\ng = nuke.thisNode()\n\ntry:\n    base_path = g\['output_path'].value()\n    mov_cs = g\['mov_colorspace'].value()\n    render_mode = g\['render_mode'].value()\n\n    if not base_path:\n        raise Exception(\"Output path is empty.\")\n\n    clean_path = base_path\n    for token in \['%', '#']:\n        if token in clean_path:\n            clean_path = clean_path.split(token)\[0]\n    if '.' in os.path.basename(clean_path):\n        clean_path = os.path.splitext(clean_path)\[0]\n    base_path = clean_path\n    exr_path = base_path + \".%04d.exr\"\n    mov_path = base_path + \".mov\"\n\n    write_exr = None\n    write_mov = None\n\n    for n in g.nodes():\n        if n.name().endswith(\"Write_EXR\"):\n            write_exr = n\n        elif n.name().endswith(\"Write_MOV\"):\n            write_mov = n\n\n    if not write_exr or not write_mov:\n        raise Exception(\"Internal Write nodes not found.\")\n\n    if render_mode in \[\"EXR only\", \"EXR + MOV\"]:\n        write_exr\['file'].setValue(\"\")\n        write_exr\['file'].setValue(exr_path)\n\n    if render_mode in \[\"MOV only\", \"EXR + MOV\"]:\n        write_mov\['file'].setValue(\"\")\n        write_mov\['file'].setValue(mov_path)\n        write_mov.knob('file_type').setValue('mov')\n        write_mov.knob('colorspace').setValue(mov_cs)\n\n    start = int(nuke.root().firstFrame())\n    end = int(nuke.root().lastFrame())\n\n    if render_mode == \"EXR only\":\n        nuke.execute(write_exr, start, end)\n    elif render_mode == \"MOV only\":\n        nuke.execute(write_mov, start, end)\n    elif render_mode == \"EXR + MOV\":\n        nuke.execute(write_exr, start, end)\n        nuke.execute(write_mov, start, end)\n\n    g\['status'].setValue(\"Render complete.\")\n\nexcept Exception as e:\n    g\['status'].setValue(\"Render failed: \" + str(e))\n"}
+}
+ Input {
+  inputs 0
+  name Input1
+ }
+set N607cc00 [stack 0]
+ Write {
+  channels rgba
+  in_colorspace scene_linear
+  out_colorspace scene_linear
+  ocioColorspace scene_linear
+  display default
+  view sRGB
+  name Write_EXR
+ }
+push $N607cc00
+ Write {
+  in_colorspace scene_linear
+  out_colorspace scene_linear
+  ocioColorspace scene_linear
+  display default
+  view sRGB
+  name Write_MOV
+ }
+push $N607cc00
+ Output {
+  name Output1
+ }
+end_group

@@ -1,0 +1,254 @@
+#! /builds/nuke/9.0v7/fe3d649516/priv/libnuke-9.0.7.so -nx
+version 9.0 v7
+Gizmo {
+inputs 2
+tile_color 0x6aff55ff
+note_font "DejaVu Sans Bold"
+lock_connections true
+addUserKnob {20 Chmerge l "Key Setting"}
+addUserKnob {26 Colorspace l "" +STARTLINE T "Colorspace\n"}
+addUserKnob {41 colorspace_in l in T Colorspace1.colorspace_in}
+addUserKnob {41 illuminant_in l "" -STARTLINE T Colorspace1.illuminant_in}
+addUserKnob {41 primary_in l "" -STARTLINE T Colorspace1.primary_in}
+addUserKnob {41 colorspace_out l out T Colorspace1.colorspace_out}
+addUserKnob {41 illuminant_out l "" -STARTLINE T Colorspace1.illuminant_out}
+addUserKnob {41 primary_out l "" -STARTLINE T Colorspace1.primary_out}
+addUserKnob {26 ""}
+addUserKnob {4 Channel l SingleChannel t "Select Channel For Key ." M {Red Green Blue "" "" "" ""}}
+addUserKnob {26 CHmix l "" +STARTLINE}
+addUserKnob {26 Operation l "" t "Enable Channel Operation\nby using following channels presets" +STARTLINE T "Enable MultiChannel Operation\n"}
+addUserKnob {6 singlech l Enable t "Click on Enable to use Below Ch-Operation\n\n" +STARTLINE}
+singlech true
+addUserKnob {4 MergedCH t "MergeRG - Merge Red and Green\nMergeGB - Merge Green and Blue\nMergeBR - Merge Blue and Red\n" M {MergeRG MergeGB MergeBR "" ""}}
+addUserKnob {41 operation l "Merge operation" T Merge_RG.operation}
+addUserKnob {26 ""}
+addUserKnob {26 t3 l "" t "Adjust aplha using grade" +STARTLINE T "Tweak Grade\n"}
+addUserKnob {41 blackpoint T Grade11.blackpoint}
+addUserKnob {41 whitepoint T Grade11.whitepoint}
+addUserKnob {41 multiply T Grade11.multiply}
+addUserKnob {41 gamma T Grade11.gamma}
+addUserKnob {6 invert l Invert t "Invet Channel" +STARTLINE}
+addUserKnob {26 "" +STARTLINE}
+addUserKnob {26 t l "" +STARTLINE T "KeyAdvance v1.03 - (c) 2016 - Sangram Patil \t"}
+addUserKnob {26 "" l "  "}
+}
+Input {
+inputs 0
+name Source
+xpos 230
+ypos -430
+}
+Colorspace {
+illuminant_out D75
+name Colorspace1
+xpos 225
+ypos -236
+}
+set N75d4c1c0 [stack 0]
+Dot {
+name Dot10
+xpos 264
+ypos -52
+}
+set Nbb261a10 [stack 0]
+Dot {
+name Dot11
+xpos 115
+ypos -52
+}
+Shuffle {
+green red
+blue red
+alpha red
+name Red
+tile_color 0xff000000
+xpos 76
+ypos 2
+}
+set N5c3922f0 [stack 0]
+push $Nbb261a10
+Dot {
+name Dot12
+xpos 416
+ypos -52
+}
+Shuffle {
+red blue
+green blue
+alpha blue
+name Blue
+tile_color 0x3fffff
+xpos 377
+}
+set N667719c0 [stack 0]
+Merge2 {
+inputs 2
+name Merge_RG
+xpos 377
+ypos 123
+}
+set Cb40b30d0 [stack 0]
+push $Nbb261a10
+Shuffle {
+red green
+blue green
+alpha green
+name Green
+tile_color 0x1fff00ff
+xpos 225
+}
+set N7a983350 [stack 0]
+push $N667719c0
+clone $Cb40b30d0 {
+inputs 2
+xpos 225
+ypos 122
+selected false
+}
+push $N5c3922f0
+push $N7a983350
+clone $Cb40b30d0 {
+inputs 2
+xpos 76
+ypos 124
+selected false
+}
+Switch {
+inputs 3
+which {{MergedCH}}
+name Switch1
+xpos 225
+ypos 229
+}
+push $N75d4c1c0
+Dot {
+name Dot6
+xpos -266
+ypos -232
+}
+Dot {
+name Dot1
+xpos -266
+ypos -29
+}
+set Nc9088dc0 [stack 0]
+Dot {
+name Dot3
+xpos -101
+ypos -29
+}
+Shuffle {
+red blue
+green blue
+alpha blue
+name Blue1
+tile_color 0x3fffff
+xpos -140
+ypos 23
+}
+push $Nc9088dc0
+Shuffle {
+red green
+blue green
+alpha green
+name Green1
+tile_color 0x1fff00ff
+xpos -305
+ypos 22
+}
+push $Nc9088dc0
+Dot {
+name Dot2
+xpos -420
+ypos -29
+}
+Shuffle {
+green red
+blue red
+alpha red
+name Red1
+tile_color 0xff000000
+xpos -459
+ypos 22
+}
+Switch {
+inputs 3
+which {{Channel}}
+name Switch2
+xpos -305
+ypos 315
+}
+Switch {
+inputs 2
+which {{singlech}}
+name onoff
+xpos 225
+ypos 315
+}
+Grade {
+channels all
+black_clamp false
+name Grade11
+xpos 225
+ypos 446
+}
+Invert {
+mix {{invert}}
+name Invert1
+xpos 225
+ypos 512
+}
+Clamp {
+name Clamp1
+xpos 225
+ypos 586
+}
+set N7c7abe30 [stack 0]
+Input {
+inputs 0
+name Mask
+xpos 656
+ypos 592
+number 1
+}
+push $N7c7abe30
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos 388
+ypos 586
+}
+Unpremult {
+name Unpremult1
+xpos 388
+ypos 648
+}
+Premult {
+name Premult1
+xpos 388
+ypos 699
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy2
+xpos 225
+ypos 693
+}
+Shuffle {
+in rgb
+in2 alpha
+name Shuffle4
+xpos 225
+ypos 804
+}
+Output {
+name Output1
+selected true
+xpos 225
+ypos 964
+}
+end_group

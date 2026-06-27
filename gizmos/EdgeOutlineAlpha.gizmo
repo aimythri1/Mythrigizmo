@@ -1,0 +1,99 @@
+#! C:/Program Files/Nuke13.2v4/nuke-13.2.4.dll -nx
+version 13.2 v4
+Gizmo {
+ addUserKnob {20 User}
+ addUserKnob {41 size l "Inner size" T Inner.size}
+ addUserKnob {41 size_2 l "Inner Blur" T InnerBlur.size}
+ addUserKnob {41 size_1 l "Outer size" T Outer.size}
+ addUserKnob {41 size_3 l "Outer Blur" T OuterBlur.size}
+ addUserKnob {41 white l "Overall Gain" T OverallGrade.white}
+ addUserKnob {41 size_4 l "Overall Blur" T Overall_Blur.size}
+ addUserKnob {6 RemoveTransperency +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 _1 l www.karthikc.com -STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 544
+  ypos -140
+ }
+ Reformat {
+  name Reformat1
+  xpos 544
+  ypos -105
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  fromInput2 {{0} B}
+  mappings "4 rgba.alpha 0 3 rgba.alpha 0 3 rgba.alpha 0 3 rgba.red 0 0 rgba.alpha 0 3 rgba.green 0 1 rgba.alpha 0 3 rgba.blue 0 2"
+  name Shuffle1
+  xpos 544
+  ypos -72
+ }
+ Grade {
+  whitepoint 0
+  white_clamp true
+  name Remove_Transperency
+  selected true
+  xpos 544
+  ypos -46
+  disable {{!RemoveTransperency}}
+ }
+set N36f8e800 [stack 0]
+ FilterErode {
+  channels rgba
+  name Outer
+  xpos 473
+  ypos 16
+ }
+ Blur {
+  name OuterBlur
+  xpos 465
+  ypos 59
+ }
+ Dot {
+  name Dot1
+  xpos 499
+  ypos 114
+ }
+push $N36f8e800
+ FilterErode {
+  channels rgba
+  name Inner
+  xpos 597
+  ypos 14
+ }
+ Blur {
+  name InnerBlur
+  xpos 618
+  ypos 57
+ }
+ Dot {
+  name Dot2
+  xpos 652
+  ypos 106
+ }
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge1
+  xpos 536
+  ypos 171
+ }
+ Grade {
+  name OverallGrade
+  xpos 536
+  ypos 231
+ }
+ Blur {
+  name Overall_Blur
+  xpos 536
+  ypos 257
+ }
+ Output {
+  name Output1
+  xpos 536
+  ypos 393
+ }
+end_group

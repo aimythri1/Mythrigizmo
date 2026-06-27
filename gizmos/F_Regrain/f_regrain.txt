@@ -1,0 +1,315 @@
+set cut_paste_input [stack 0]
+version 11.1 v1
+push $cut_paste_input
+Reformat {
+ name Reformat2
+ selected true
+ xpos 290
+ ypos -154
+}
+Dot {
+ name Dot1
+ selected true
+ xpos 324
+ ypos -6
+}
+set Nd2d6a000 [stack 0]
+Read {
+ inputs 0
+ file "D:/paili/exr _inputs/PUSHPA_SC01_SHOT_070/PUSHPA_SC01_SHOT_070_####.exr"
+ format "4448 1856 0 0 4448 1856 1 SFX_WORLD_RECT0"
+ first 1001
+ last 1009
+ origfirst 1001
+ origlast 1009
+ origset true
+ auto_alpha true
+ name Read1
+ selected true
+ xpos -40
+ ypos -160
+}
+Difference {
+ inputs 2
+ gain 11111111
+ name Difference1
+ selected true
+ xpos -40
+ ypos -16
+}
+Erode {
+ name Erode1
+ selected true
+ xpos -40
+ ypos 56
+}
+Blur {
+ size 5
+ name Blur2
+ selected true
+ xpos -40
+ ypos 104
+}
+set Ne9733880 [stack 0]
+push $Nd2d6a000
+Keyer {
+ operation "luminance key"
+ range {0.2114151158 0.2114151158 1 1}
+ name Keyer1
+ selected true
+ xpos 144
+ ypos 236
+}
+Merge2 {
+ inputs 2
+ operation mask
+ name Merge6
+ selected true
+ xpos -40
+ ypos 302
+}
+Read {
+ inputs 0
+ file "D:/paili/exr _inputs/PUSHPA_SC01_SHOT_070/PUSHPA_SC01_SHOT_070_####.exr"
+ format "4448 1856 0 0 4448 1856 1 SFX_WORLD_RECT0"
+ first 1001
+ last 1009
+ origfirst 1001
+ origlast 1009
+ origset true
+ auto_alpha true
+ name Read3
+ selected true
+ xpos 614
+ ypos 80
+}
+set Ne9733500 [stack 0]
+FrameHold {
+ first_frame 1008
+ name FrameHold1
+ selected true
+ xpos 510
+ ypos 32
+}
+set Ncc86e400 [stack 0]
+push $Nd2d6a000
+OFXuk.co.thefoundry.furnace.f_regrain_v402 {
+ inputs 2
+ stockType "Sample Grain"
+ show Result
+ redActive true
+ greenActive true
+ blueActive true
+ scale 1.1
+ gain 2.74
+ Gains 1
+ redGain 1.3
+ greenGain 1.16
+ blueGain 1.18
+ Scales 1
+ redScale 1
+ greenScale 1
+ blueScale 1
+ Response 1
+ srcColourSpace "Grain Colour Space"
+ useResponse false
+ responseMix 1
+ drawResponse false
+ TonalResponse 1
+ lowGain 1
+ midGain 1
+ highGain 1
+ "Grain Sample" 1
+ grainSampleRegionBL {2259.599979 1529.199966}
+ grainSampleRegionTR {2334.400023 1588.800064}
+ grainSampleFrame 1008
+ grainColourSpace Cineon
+ needsGrainSample true
+ responseR0Counts 0
+ responseR0Samples 0
+ responseG0Counts 0
+ responseG0Samples 0
+ responseB0Counts 0
+ responseB0Samples 0
+ responseR1Counts 0
+ responseR1Samples 0
+ responseG1Counts 0
+ responseG1Samples 0
+ responseB1Counts 0
+ responseB1Samples 0
+ responseR2Counts 0
+ responseR2Samples 0
+ responseG2Counts 0
+ responseG2Samples 0
+ responseB2Counts 0
+ responseB2Samples 0
+ responseR3Counts 0
+ responseR3Samples 0
+ responseG3Counts 0
+ responseG3Samples 0
+ responseB3Counts 0
+ responseB3Samples 0
+ responseR4Counts 0
+ responseR4Samples 0
+ responseG4Counts 0
+ responseG4Samples 0
+ responseB4Counts 0
+ responseB4Samples 0
+ responseR5Counts 0
+ responseR5Samples 0
+ responseG5Counts 0
+ responseG5Samples 0
+ responseB5Counts 0
+ responseB5Samples 0
+ responseR6Counts 0
+ responseR6Samples 0
+ responseG6Counts 0
+ responseG6Samples 0
+ responseB6Counts 0
+ responseB6Samples 0
+ responseR7Counts 0
+ responseR7Samples 0
+ responseG7Counts 0
+ responseG7Samples 0
+ responseB7Counts 0
+ responseB7Samples 0
+ responseR8Counts 0
+ responseR8Samples 0
+ responseG8Counts 0
+ responseG8Samples 0
+ responseB8Counts 0
+ responseB8Samples 0
+ responseR9Counts 0
+ responseR9Samples 0
+ responseG9Counts 0
+ responseG9Samples 0
+ responseB9Counts 0
+ responseB9Samples 0
+ cacheBreaker true
+ name F_ReGrain2
+ selected true
+ xpos 510
+ ypos 302
+}
+push $Ne9733880
+push $Ncc86e400
+push $Nd2d6a000
+OFXuk.co.thefoundry.furnace.f_regrain_v402 {
+ inputs 2
+ stockType "Sample Grain"
+ show Result
+ redActive true
+ greenActive true
+ blueActive true
+ scale 1.13
+ gain 1.4
+ Gains 1
+ redGain 1
+ greenGain 0.9
+ blueGain 0.65
+ Scales 1
+ redScale 1
+ greenScale 1
+ blueScale 1
+ Response 1
+ srcColourSpace "Grain Colour Space"
+ useResponse false
+ responseMix 1
+ drawResponse false
+ TonalResponse 1
+ lowGain 1.38
+ midGain 1.4
+ highGain 1.22
+ "Grain Sample" 1
+ grainSampleRegionBL {287.5999818 531.1999531}
+ grainSampleRegionTR {468.4001579 678.8000565}
+ grainSampleFrame 1008
+ grainColourSpace Cineon
+ needsGrainSample true
+ responseR0Counts 0
+ responseR0Samples 0
+ responseG0Counts 0
+ responseG0Samples 0
+ responseB0Counts 0
+ responseB0Samples 0
+ responseR1Counts 0
+ responseR1Samples 0
+ responseG1Counts 0
+ responseG1Samples 0
+ responseB1Counts 0
+ responseB1Samples 0
+ responseR2Counts 0
+ responseR2Samples 0
+ responseG2Counts 0
+ responseG2Samples 0
+ responseB2Counts 0
+ responseB2Samples 0
+ responseR3Counts 0
+ responseR3Samples 0
+ responseG3Counts 0
+ responseG3Samples 0
+ responseB3Counts 0
+ responseB3Samples 0
+ responseR4Counts 0
+ responseR4Samples 0
+ responseG4Counts 0
+ responseG4Samples 0
+ responseB4Counts 0
+ responseB4Samples 0
+ responseR5Counts 0
+ responseR5Samples 0
+ responseG5Counts 0
+ responseG5Samples 0
+ responseB5Counts 0
+ responseB5Samples 0
+ responseR6Counts 0
+ responseR6Samples 0
+ responseG6Counts 0
+ responseG6Samples 0
+ responseB6Counts 0
+ responseB6Samples 0
+ responseR7Counts 0
+ responseR7Samples 0
+ responseG7Counts 0
+ responseG7Samples 0
+ responseB7Counts 0
+ responseB7Samples 0
+ responseR8Counts 0
+ responseR8Samples 0
+ responseG8Counts 0
+ responseG8Samples 0
+ responseB8Counts 0
+ responseB8Samples 0
+ responseR9Counts 0
+ responseR9Samples 0
+ responseG9Counts 0
+ responseG9Samples 0
+ responseB9Counts 0
+ responseB9Samples 0
+ cacheBreaker true
+ name F_ReGrain3
+ selected true
+ xpos 290
+ ypos 38
+}
+push $Ne9733500
+Keymix {
+ inputs 3
+ name Keymix1
+ selected true
+ xpos 290
+ ypos 104
+}
+Keymix {
+ inputs 3
+ name Keymix2
+ selected true
+ xpos 290
+ ypos 296
+}
+Reformat {
+ name Reformat3
+ selected true
+ xpos 290
+ ypos 382
+}

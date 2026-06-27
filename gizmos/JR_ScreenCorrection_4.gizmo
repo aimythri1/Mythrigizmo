@@ -1,0 +1,179 @@
+#! C:/Program Files/Nuke11.2v2/nuke-11.2.2.dll -nx
+version 11.2 v2
+Gizmo {
+ tile_color 0xaa1e1eff
+ addUserKnob {20 ScreenCorrection}
+ addUserKnob {20 Step00 n 1}
+ Step00 0
+ addUserKnob {26 Instructions00 l "" +STARTLINE T "Before getting started with Step01 \ndenoising your footage might help you to achieve better results\n"}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 Step01 n 1}
+ Step01 0
+ addUserKnob {26 Instructions01 l "" +STARTLINE T "In Step 01 you have to get a cleanplate \nusing this IBK Colour controls\n "}
+ addUserKnob {41 screen_type l "screen type" T IBKColourV3_1.screen_type}
+ addUserKnob {41 Size l size T IBKColourV3_1.Size}
+ addUserKnob {41 off l darks T IBKColourV3_1.off}
+ addUserKnob {41 mult l lights T IBKColourV3_1.mult}
+ addUserKnob {26 ""}
+ addUserKnob {41 erode T IBKColourV3_1.erode}
+ addUserKnob {26 ""}
+ addUserKnob {41 multi l "patch black" T IBKColourV3_1.multi}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 Step02 n 1}
+ Step02 0
+ addUserKnob {26 Instructions02 l "" +STARTLINE T "Move the slider to position 1 of 2 \nwhen you are done with the IBK\n "}
+ addUserKnob {41 which T Switch1.which}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 Step03 n 1}
+ Step03 0
+ addUserKnob {26 Instructions03 l "" +STARTLINE T "Now choose between the operations \ngreenscreen and bluescreen \ndepending on the colour of your chroma\n"}
+ addUserKnob {41 operation T Keyer1.operation}
+ addUserKnob {26 ""}
+ addUserKnob {26 _1 l "" +STARTLINE T "Then pick the color of a clean region \nand change the format to match \nyour footage if necessary\n"}
+ addUserKnob {41 color T Constant1.color}
+ addUserKnob {41 format T Constant1.format}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {20 Step04 n 1}
+ Step04 0
+ addUserKnob {26 Instructions04 l "" +STARTLINE T "Finally move the slider to position 2 to see the final result\n "}
+ addUserKnob {41 which_1 l which T Switch1.which}
+ addUserKnob {26 Instructions04B l "" +STARTLINE T " \nNow your chroma is corrected and you can start\nwith the keying process"}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 Copyright l "" +STARTLINE T "\nJR Screen Correction 1.1 ©\n"}
+ addUserKnob {22 Contact l "Jaime Rojo" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.linkedin.com/in/jaimerojopaez/')" +STARTLINE}
+}
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 509
+  ypos 421
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 328
+  ypos 26
+ }
+ Dot {
+  name Dot1
+  xpos 362
+  ypos 66
+ }
+set Nb119e380 [stack 0]
+ Dot {
+  name Dot2
+  xpos 362
+  ypos 216
+ }
+set Nb119f180 [stack 0]
+ IBKColourV3 {
+  name IBKColourV3_1
+  xpos 439
+  ypos 212
+  screen_type green
+  Size 1
+ }
+set Nb11ae000 [stack 0]
+ Keyer {
+  invert true
+  name Keyer1
+  selected true
+  xpos 627
+  ypos 206
+  addUserKnob {20 User}
+  addUserKnob {41 operation_1 l operation T Keyer1.operation}
+ }
+ set Cb123e380 [stack 0]
+set Nb123e380 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge3
+  xpos 627
+  ypos 444
+ }
+push $Nb119e380
+clone $Cb123e380 {
+  xpos 628
+  ypos 56
+  selected false
+ }
+ Dot {
+  name Dot3
+  xpos 830
+  ypos 66
+ }
+push $Nb123e380
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge2
+  xpos 796
+  ypos 212
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  xpos 796
+  ypos 329
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge4
+  xpos 796
+  ypos 444
+ }
+push $Nb119f180
+ Dot {
+  name Dot4
+  xpos 362
+  ypos 616
+ }
+ Dot {
+  name Dot6
+  xpos 610
+  ypos 616
+ }
+set Nd88a2700 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 796
+  ypos 612
+ }
+push $Nd88a2700
+push $Nb11ae000
+ Dot {
+  name Dot5
+  xpos 473
+  ypos 697
+ }
+ Switch {
+  inputs 3
+  name Switch1
+  xpos 796
+  ypos 693
+ }
+set Nd88d5c00 [stack 0]
+ Output {
+  name Output1
+  xpos 796
+  ypos 809
+ }
+push $Nd88d5c00
+ Viewer {
+  frame_range 1-88
+  name Viewer1
+  xpos 1003
+  ypos 901
+ }
+end_group
