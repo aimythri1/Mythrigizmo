@@ -1,19 +1,41 @@
+import nuke
+# access the main menu
+toolbar = nuke.menu ("nodes")
+
+# create a custom menu
+menu = nuke.menu("Nuke").addMenu("My Tools")
+# add a command (example:create a blur node)
+#menu.addCommand("blur node", "nuke.message('blur from menu.py!')")
+nuke.pluginAddPath('./gizmos')
+
+#import nuke
+
+#toolbar = nuke.menu("Nodes")
+#my_menu = toolbar.addMenu("My Tools")
+
+#my_menu.addCommand("My Gizmo", "nuke.createNode('MyGizmo')")
+
+#import nuke
+
+#nuke.pluginAddPath('./gizmos')
+
+#toolbar = nuke.menu("Nodes")
+#custom_menu = toolbar.addMenu("🔥 Nuke Gizmos")
+
+#custom_menu.addCommand("Blur Advanced", "nuke.createNode('BlurAdvanced')")
+#custom_menu.addCommand("Glow Pro", "nuke.createNode('GlowPro')")
+#custom_menu.addCommand("My Nuke Tool", "nuke.createNode('MyGizmo')")
+
 import os
 import nuke
 
-this_dir = os.path.dirname(__file__)
-gizmo_path = os.path.join(this_dir, "gizmos")
-
+gizmo_path = os.path.join(os.path.dirname(__file__), "gizmos")
 nuke.pluginAddPath(gizmo_path)
 
 toolbar = nuke.menu("Nodes")
-custom_menu = toolbar.addMenu("Custom Gizmos")
+menu = menu.addMenu("Custom Gizmos")
 
-if os.path.exists(gizmo_path):
-    for file_name in sorted(os.listdir(gizmo_path)):
-        if file_name.endswith(".gizmo"):
-            gizmo_name = os.path.splitext(file_name)[0]
-            custom_menu.addCommand(
-                gizmo_name,
-                "nuke.createNode('{}')".format(gizmo_name)
-            )
+for file in os.listdir(gizmo_path):
+    if file.endswith(".gizmo"):
+        name = file.replace(".gizmo", "")
+        menu.addCommand(name, f"nuke.createNode('{name}')")
